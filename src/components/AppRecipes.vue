@@ -1,30 +1,33 @@
 <template>
   <div class="jumbotron vertical-center">
     <div class="container">
-      <div class="title">
-          <h1>FoodApp</h1>
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>Recipes_app</h1>
           <hr />
           <br />
+          <!-- Allert Message -->
           <b-alert v-if="showMessage" variant="success" show>{{
             message
           }}</b-alert>
+          <!-- b-alert v-if="error" variant="danger" show>{{ error }}</b-alert-->
 
           <button
             type="button"
-            class="btn btn-success btn-sm"
+            class="btn btn-danger btn-sm"
             v-b-modal.recipe-modal
           >
-            Add_recipe:
+            Create Recipe
           </button>
           <br /><br />
-          <table class="table">
-            <thead class="thead-dark">
+          <table class="table table-hover">
+            <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Ingredients</th>
-                <th scope="col">Steps</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Favorite</th>
+                <th scope="col">Recipe Name</th>
+                <th scope="col">Recipe Ingredients</th>
+                <th scope="col">Recipe Steps</th>
+                <th scope="col">Recipe Rating</th>
+                <th scope="col">Recipe Favorite</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -34,7 +37,9 @@
                 <td>{{ recipe.ingredients }}</td>
                 <td>{{ recipe.steps }}</td>
                 <td>{{ recipe.rating }}</td>
-                <td>{{ recipe.favorite }}</td>
+                <td>
+                  <input type="checkbox" class="checkbox" v-model="recipe.favorite" />
+                </td>
                 <td>
                   <div class="btn-group" role="group">
                     <button
@@ -65,81 +70,79 @@
       <b-modal
         ref="addRecipeModal"
         id="recipe-modal"
-        title="Create new recipe"
+        title="Create a new recipe"
         hide-backdrop
         hide-footer
       >
         <b-form @submit="onSubmit" class="w-100">
           <b-form-group
             id="form-name-group"
-            label="Name:"
+            label="Recipe Name:"
             label-for="form-name-input"
           >
             <b-form-input
               id="form-name-input"
               type="text"
               v-model="createRecipeForm.name"
-              placeholder="Name"
+              placeholder="Recipe Name"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-ingredients-group"
-            label="Ingredients:"
+            label="Recipe Ingredients:"
             label-for="form-ingredients-input"
           >
             <b-form-input
               id="form-ingredients-input"
               type="text"
               v-model="createRecipeForm.ingredients"
-              placeholder="Ingredients"
+              placeholder="Recipe Ingredients"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-steps-group"
-            label="Steps:"
+            label="Recipe Steps:"
             label-for="form-steps-input"
           >
             <b-form-input
               id="form-steps-input"
               type="text"
               v-model="createRecipeForm.steps"
-              placeholder="Steps"
+              placeholder="Recipe Steps"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-rating-group"
-            label="Rating:"
+            label="Recipe Rating:"
             label-for="form-rating-input"
           >
             <b-form-input
               id="form-rating-input"
-              type="text"
-              v-model="createRecipeForm.rating"
-              placeholder="Select 1-5"
+              type="number"
+              v-model.number="createRecipeForm.rating"
+              placeholder="Recipe Rating"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-favorite-group"
-            label="Favorite:"
+            label="Recipe Favorite:"
             label-for="form-favorite-input"
           >
-            <b-form-input
+            <b-form-checkbox
               id="form-favorite-input"
               type="checkbox"
               v-model="createRecipeForm.favorite"
-              value="True"
-              unchecked-value="False"
               required
             >
-            </b-form-input>
+            </b-form-checkbox>
           </b-form-group>
 
           <b-button type="submit" variant="outline-info">Submit</b-button>
@@ -150,88 +153,86 @@
       <b-modal
         ref="editRecipeModal"
         id="edit-recipe-modal"
-        title="Edit recipe"
+        title="Edit the recipe"
         hide-backdrop
         hide-footer
       >
         <b-form @submit="onSubmitUpdate" class="w-100">
           <b-form-group
             id="form-edit-name-group"
-            label="Name:"
+            label="Recipe Name:"
             label-for="form-edit-name-input"
           >
             <b-form-input
               id="form-edit-name-input"
               type="text"
               v-model="editRecipeForm.name"
-              placeholder="Name"
+              placeholder="Recipe Name"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-edit-ingredients-group"
-            label="Ingredients:"
+            label="Recipe Ingredients:"
             label-for="form-edit-ingredients-input"
           >
             <b-form-input
               id="form-edit-ingredients-input"
               type="text"
               v-model="editRecipeForm.ingredients"
-              placeholder="Ingredients"
+              placeholder="Recipe Ingredients"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-edit-steps-group"
-            label="Steps:"
+            label="Recipe Steps:"
             label-for="form-edit-steps-input"
           >
             <b-form-input
               id="form-edit-steps-input"
               type="text"
               v-model="editRecipeForm.steps"
-              placeholder="Steps"
+              placeholder="Recipe Steps"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-edit-rating-group"
-            label="Rating:"
+            label="Recipe Rating:"
             label-for="form-edit-rating-input"
           >
             <b-form-input
               id="form-edit-rating-input"
-              type="text"
-              v-model="editRecipeForm.rating"
-              placeholder="Select 1-5"
+              type="number"
+              v-model.number="editRecipeForm.rating"
+              placeholder="Recipe Rating"
               required
             >
             </b-form-input>
           </b-form-group>
           <b-form-group
             id="form-edit-favorite-group"
-            label="Favorite:"
+            label="Recipe Favorite:"
             label-for="form-edit-favorite-input"
           >
-            <b-form-input
+            <b-form-checkbox
               id="form-edit-favorite-input"
               type="checkbox"
               v-model="editRecipeForm.favorite"
-              value="True"
-              unchecked-value="False"
               required
             >
-            </b-form-input>
+            </b-form-checkbox>
           </b-form-group>
           <b-button type="submit" variant="outline-info">Update</b-button>
         </b-form>
       </b-modal>
       <!-- End of Modal for Edit Account-->
     </div>
- </div>
+  </div>
 </template>
 
 <script>
@@ -245,16 +246,16 @@ export default {
         name: "",
         ingredients: "",
         steps: "",
-        rating: "",
-        favorite: "False",
+        rating: 1,
+        favorite: false,
       },
       editRecipeForm: {
         id: "",
         name: "",
         ingredients: "",
         steps: "",
-        rating: "",
-        favorite: "False",
+        rating: 1,
+        favorite: false,
       },
       showMessage: false,
       message: "",
@@ -284,7 +285,7 @@ export default {
         .then((response) => {
           this.RESTgetRecipes();
           // For message alert
-          this.message = "Created";
+          this.message = "Recipe Created succesfully!";
           // To actually show the message
           this.showMessage = true;
           // To hide the message after 3 seconds
@@ -305,17 +306,13 @@ export default {
         .then((response) => {
           this.RESTgetRecipes();
           // For message alert
-          this.message = "Updated";
+          this.message = "Recipe Updated succesfully!";
           // To actually show the message
           this.showMessage = true;
           // To hide the message after 3 seconds
           setTimeout(() => {
             this.showMessage = false;
           }, 3000);
-        })
-        .catch((error) => {
-          console.error(error);
-          this.RESTgetRecipes();
         });
     },
     // Delete account
@@ -326,7 +323,7 @@ export default {
         .then((response) => {
           this.RESTgetRecipes();
           // For message alert
-          this.message = "Deleted";
+          this.message = "Recipe Deleted succesfully!";
           // To actually show the message
           this.showMessage = true;
           // To hide the message after 3 seconds
@@ -347,13 +344,12 @@ export default {
       this.createRecipeForm.name = "";
       this.createRecipeForm.ingredients = "";
       this.createRecipeForm.steps = "";
-      this.createRecipeForm.rating = "";
+      this.createRecipeForm.rating = 1;
       this.createRecipeForm.favorite = false;
-      this.editRecipeForm.id = "";
       this.editRecipeForm.name = "";
       this.editRecipeForm.ingredients = "";
       this.editRecipeForm.steps = "";
-      this.editRecipeForm.rating = "";
+      this.editRecipeForm.rating = 1;
       this.editRecipeForm.favorite = false;
     },
     // Handle submit event for create recipe
