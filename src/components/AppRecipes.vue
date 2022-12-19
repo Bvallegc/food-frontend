@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
-          <h1>Recipes_app</h1>
+          <h1>RecipesApp</h1>
           <hr />
           <br />
           <!-- Allert Message -->
@@ -23,11 +23,11 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">Recipe Name</th>
-                <th scope="col">Recipe Ingredients</th>
-                <th scope="col">Recipe Steps</th>
-                <th scope="col">Recipe Rating</th>
-                <th scope="col">Recipe Favorite</th>
+                <th scope="col">Name</th>
+                <th scope="col">Ingredients</th>
+                <th scope="col">Steps</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Favorite</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -63,7 +63,7 @@
             </tbody>
           </table>
           <footer class="text-center">
-            Copyright &copy; All Rights Reserved.
+            An app created by Beltran Valle
           </footer>
         </div>
       </div>
